@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#17152f"><title>BrandLens AI — Round 3</title>
+<style>
+:root{--ink:#20213a;--muted:#70738a;--line:#e5e6ef;--purple:#6754d9;--pale:#f0edff;--green:#147b55;--red:#b83d50;--amber:#98620b}
+*{box-sizing:border-box}body{margin:0;background:#f5f6fb;color:var(--ink);font:15px/1.5 system-ui,Arial,sans-serif}
+header{background:#17152f;color:#fff;padding:16px max(16px,calc((100% - 1120px)/2));display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px}.logo{background:linear-gradient(135deg,#a99cff,#6754d9);padding:7px 12px;border-radius:12px;font-weight:800;font-size:20px}.brand h1{font-size:18px;margin:0}.brand small{color:#c8c5e0}
+.pill{border:1px solid #514d72;border-radius:30px;padding:5px 10px;font-size:11px}
+main{max-width:1120px;margin:22px auto;padding:0 14px}.intro h2{margin:0;font-size:26px}.muted,.sub,small{color:var(--muted)}.sub{font-size:13px;margin:3px 0 13px}
+.layout{display:grid;grid-template-columns:205px 1fr;gap:15px;margin-top:18px}.nav,.panel,.stat{background:#fff;border:1px solid var(--line);border-radius:14px}.nav{padding:8px;height:max-content;position:sticky;top:10px}
+.nav button{display:block;width:100%;text-align:left;border:0;background:none;padding:10px;border-radius:9px;color:#55566d;font:inherit;cursor:pointer}.nav button.active{background:var(--pale);color:var(--purple);font-weight:700}
+.view{display:none}.view.active{display:block}.panel{padding:17px;margin-bottom:13px}.panel h3{margin:0 0 3px;font-size:17px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:13px}.stat{padding:12px}.stat strong{display:block;font-size:23px}
+label{display:block;font-size:13px;font-weight:650;margin:11px 0 5px}input,textarea,select{width:100%;padding:10px;border:1px solid #dfe0ea;border-radius:9px;background:white;color:var(--ink);font:inherit}textarea{min-height:100px;resize:vertical}
+.btnrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.btn{border:0;border-radius:9px;padding:10px 13px;background:var(--purple);color:white;font-weight:700;cursor:pointer}.secondary{background:#efeff6;color:#41425c}.green{background:var(--green)}.red{background:#fff0f1;color:var(--red);border:1px solid #f4d4d8}
+.notice{padding:11px;border-radius:10px;background:#f7f5ff;border:1px solid #e7e1ff;color:#51458e;font-size:13px;margin:10px 0}.warn{background:#fff8e9;border-color:#f1dfb8;color:#76500d}
+.issue{border:1px solid var(--line);border-left:4px solid var(--amber);border-radius:10px;padding:11px;margin:9px 0}.issue.high{border-left-color:var(--red)}.issue.low{border-left-color:var(--green)}.issue h4{margin:0 0 4px}.issue p{font-size:13px;margin:4px 0;color:#62647a}
+.tag,.status{font-size:11px;font-weight:700;border-radius:30px;padding:4px 8px;background:#fff4df;color:#95600b}.tag.high,.status.rejected{background:#ffebed;color:#b13d4c}.tag.low,.status.approved{background:#e8f7f0;color:#14734f}
+.empty{text-align:center;padding:20px;border:1px dashed #d9dbe7;border-radius:10px;color:var(--muted)}.history-item{padding:11px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:10px;align-items:center}
+.preview{max-width:100%;max-height:220px;display:block;margin-top:10px;border:1px solid var(--line);border-radius:10px}.swatches{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.swatch{width:38px;height:38px;border:1px solid #aaa;border-radius:8px}
+footer{text-align:center;padding:20px;color:var(--muted);font-size:12px}
+@media(max-width:700px){.layout{grid-template-columns:1fr}.nav{position:static;display:grid;grid-template-columns:repeat(2,1fr)}.nav button{text-align:center;font-size:12px;padding:8px 3px}.stats{gap:6px}.stat{padding:9px}.stat strong{font-size:19px}}
+</style></head>
+<body>
+<header><div class="brand"><div class="logo">B</div><div><h1>BrandLens AI</h1><small>Brand governance workspace</small></div></div><span class="pill">ROUND 3 • PRODUCT MVP</span></header>
+<main>
+<div class="intro"><h2>Keep every message on-brand.</h2><p class="muted">Review content, claims and visual assets against your approved brand rules.</p></div>
+<div class="layout">
+<nav class="nav">
+<button class="active" data-view="review">◈ Content review</button><button data-view="guidelines">▤ Guidelines</button>
+<button data-view="claims">✓ Claim checker</button><button data-view="visual">▧ Visual checker</button>
+<button data-view="workflow">◎ Team workflow</button><button data-view="history">◷ Review history</button>
+</nav><div>
+<section id="review" class="view active">
+<div class="stats"><div class="stat"><small>Reviews saved</small><strong id="statReviews">0</strong></div><div class="stat"><small>Needs attention</small><strong id="statIssues">0</strong></div><div class="stat"><small>Approved</small><strong id="statApproved">0</strong></div></div>
+<div class="panel"><h3>Submit content for review</h3><p class="sub">Paste a draft. Checks use the guideline library saved in this browser.</p>
+<label>Content title</label><input id="contentTitle" maxlength="100" placeholder="e.g. New product launch">
+<label>Content to review</label><textarea id="contentText" maxlength="12000" placeholder="Paste website copy, a social post, email or advertisement..."></textarea>
+<div class="btnrow"><button class="btn" id="analyzeBtn">Analyse content →</button><button class="btn secondary" id="sampleBtn">Load sample</button></div>
+<p class="sub">Rule-based checks only. This app does not claim to use a connected AI model.</p></div>
+<div class="panel"><h3>Analysis results</h3><div id="results" class="empty">No content analysed yet. Submit a draft to begin.</div></div>
+</section>
+<section id="guidelines" class="view"><div class="panel"><h3>Brand guideline library</h3><p class="sub">Edit rules used by the review tools. Saved locally in this browser.</p>
+<label>Brand name</label><input id="brandName">
+<label>Approved tone</label><select id="brandTone"><option>Friendly and professional</option><option>Confident and informative</option><option>Warm and conversational</option><option>Formal and authoritative</option></select>
+<label>Preferred terminology <small>(one per line: incorrect = preferred)</small></label><textarea id="approvedTerms"></textarea>
+<label>Words or phrases to avoid <small>(one per line)</small></label><textarea id="bannedTerms"></textarea>
+<label>Approved facts <small>(one approved fact per line; exact text is used as evidence)</small></label><textarea id="approvedFacts"></textarea>
+<label>Additional guidance</label><textarea id="guidelineNotes"></textarea>
+<div class="btnrow"><button class="btn" id="saveGuidelines">Save guidelines</button><button class="btn secondary" id="resetGuidelines">Restore demo rules</button></div><p id="saveMessage" class="sub" aria-live="polite"></p></div></section>
+<section id="claims" class="view"><div class="panel"><h3>Evidence-based claim checker</h3><p class="sub">Potential claims are compared with the approved facts you entered. A match is a text match, not independent proof.</p>
+<label>Text to check</label><textarea id="claimText" placeholder="Enter claims such as: Founded in 2020. We guarantee results..."></textarea>
+<div class="btnrow"><button class="btn" id="checkClaims">Check claims</button><button class="btn secondary" id="copyFacts">Use latest content draft</button></div><div id="claimResults" class="empty">Enter text and check it against approved facts.</div></div>
+<div class="notice warn">Important: this MVP performs local text matching only. It does not browse the web, validate external sources or establish whether a claim is true.</div></section>
+<section id="visual" class="view"><div class="panel"><h3>Visual brand & accessibility checker</h3><p class="sub">Preview an asset and check its alt-text field and foreground/background colour contrast.</p>
+<label>Upload image or logo</label><input type="file" id="assetFile" accept="image/*"><img id="assetPreview" class="preview" alt="Uploaded asset preview" hidden>
+<label>Alternative text (alt text)</label><input id="altText" maxlength="300" placeholder="Describe the meaningful content of the image">
+<label>Foreground colour</label><input type="color" id="fgColor" value="#20213a">
+<label>Background colour</label><input type="color" id="bgColor" value="#ffffff">
+<div class="swatches"><div class="swatch" id="contrastSample"></div><div><b id="contrastRatio">21.00:1</b><br><small id="contrastStatus">Contrast result</small></div></div>
+<div class="btnrow"><button class="btn" id="checkVisual">Run accessibility checks</button></div><div id="visualResults" class="empty">Choose an image, add alt text and run the checks.</div></div>
+<div class="notice">Contrast is calculated using the WCAG relative-luminance formula. This is a helper check, not a complete accessibility audit.</div></section>
+<section id="workflow" class="view"><div class="panel"><h3>Review & approval workflow</h3><p class="sub">Demonstration of roles on this device. This is not secure authentication or shared multi-user access.</p>
+<label>Current demo role</label><select id="demoRole"><option>Editor</option><option>Reviewer</option><option>Admin</option></select>
+<label>Review item</label><select id="workflowItem"></select>
+<label>Reviewer comment</label><textarea id="reviewComment" placeholder="Add feedback or requested changes..."></textarea>
+<div class="btnrow"><button class="btn" id="addComment">Save comment</button><button class="btn secondary" id="saveVersion">Save version snapshot</button><button class="btn green" id="workflowApprove">Approve selected</button><button class="btn red" id="workflowReject">Request changes</button></div>
+<div id="workflowLog" class="empty">No workflow activity yet.</div></div></section>
+<section id="history" class="view"><div class="panel"><h3>Review history</h3><p class="sub">Saved reviews and decisions on this device/browser.</p><div id="historyList" class="empty">No reviews saved yet.</div><div class="btnrow"><button class="btn secondary" id="exportBtn">Export review data (JSON)</button><button class="btn red" id="clearHistory">Clear history</button></div></div></section>
+</div></div></main>
+<footer>BrandLens AI • Explainable checks • Human approval stays in control</footer>
+<script>
+const defaults={brandName:"Northstar",brandTone:"Friendly and professional",approvedTerms:"cheap = affordable\nguaranteed results = designed to help\ncustomers = members",bannedTerms:"#1 in the world\n100% guaranteed\ncure instantly",approvedFacts:"Founded in 2020\nHeadquartered in New Delhi\nOffers customer support Monday to Friday",guidelineNotes:"Use plain language. Avoid aggressive sales language."};
+const $=id=>document.getElementById(id), lines=s=>String(s||"").split(/\n/).map(x=>x.trim()).filter(Boolean);
+function load(k,f){try{return JSON.parse(localStorage.getItem(k))??f}catch(e){return f}}
+let guidelines=load("bl3_guidelines",defaults),history=load("bl3_history",[]),activity=load("bl3_activity",[]),current=null;
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function persist(){try{localStorage.setItem("bl3_guidelines",JSON.stringify(guidelines));localStorage.setItem("bl3_history",JSON.stringify(history));localStorage.setItem("bl3_activity",JSON.stringify(activity));return true}catch(e){alert("Browser storage is full or unavailable. Export your data and try again.");return false}}
+function fill(){Object.keys(defaults).forEach(k=>$(k).value=guidelines[k]??defaults[k])}
+function saveForm(){Object.keys(defaults).forEach(k=>guidelines[k]=$(k).value.trim())}
+function switchView(id){document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.view===id));document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active",v.id===id));if(id==="history")renderHistory();if(id==="workflow")renderWorkflow()}
+document.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>switchView(b.dataset.view));
+function analyse(t){let a=[],low=t.toLowerCase();lines(guidelines.bannedTerms).forEach(term=>{let i=low.indexOf(term.toLowerCase());if(i>=0)a.push({type:"Prohibited wording",severity:"High",match:t.slice(i,i+term.length),why:`Listed in Words or phrases to avoid: ${term}.`,fix:"Remove this phrase or replace it with wording approved by your reviewer."})});
+lines(guidelines.approvedTerms).forEach(r=>{let p=r.split("=");if(p.length>1){let bad=p[0].trim(),good=p.slice(1).join("=").trim(),i=low.indexOf(bad.toLowerCase());if(i>=0)a.push({type:"Terminology mismatch",severity:"Medium",match:t.slice(i,i+bad.length),why:`Use “${good}” instead of “${bad}”.`,fix:t.slice(0,i)+good+t.slice(i+bad.length)})}});
+const claims=[...t.matchAll(/\b(?:guarantee(?:d)?|always|never|best|fastest|leading|number one|#1|100%|up to \d+%|more than \d+)\b/gi)];
+claims.forEach(m=>{let fact=lines(guidelines.approvedFacts).find(f=>f.toLowerCase().includes(m[0].toLowerCase()));a.push({type:"Claim needs evidence",severity:"Medium",match:m[0],why:fact?"A possible approved-fact text match exists; review context manually.":"No matching approved fact was found in your local guideline list.",fix:"Add an exact approved fact and source reference in your internal process, or rewrite cautiously."})});
+if(t.length<45)a.push({type:"Content completeness",severity:"Low",match:"Short draft",why:"The draft is short and may lack context.",fix:"Add audience, purpose and supporting details."});
+if(/plain language/i.test(guidelines.guidelineNotes)&&/\b(utilize|aforementioned|facilitate)\b/i.test(t))a.push({type:"Style guidance",severity:"Low",match:"Complex wording",why:"Your guidelines request plain language.",fix:"Use shorter, familiar words."});return a}
+function stats(){$("statReviews").textContent=history.length;$("statIssues").textContent=history.filter(x=>x.issues?.length&&x.status!=="Approved").length;$("statApproved").textContent=history.filter(x=>x.status==="Approved").length}
+function render(){if(!current)return;let r=$("results");r.innerHTML=current.issues.length?current.issues.map(x=>`<div class="issue ${x.severity==="High"?"high":x.severity==="Low"?"low":""}"><h4>${esc(x.type)} <span class="tag">${esc(x.severity)}</span></h4><p><b>Matched:</b> ${esc(x.match)}</p><p><b>Why:</b> ${esc(x.why)}</p><p><b>Suggested action:</b> ${esc(x.fix)}</p></div>`).join(""):'<div class="empty">No issues detected by current rules. Human review is still recommended.</div>';
+r.innerHTML+=`<div class="btnrow"><span class="status ${current.status.toLowerCase()}">${esc(current.status)}</span><button class="btn green" id="approveBtn">Approve</button><button class="btn red" id="rejectBtn">Request changes</button></div><p class="sub" id="decisionMsg">Human reviewer makes the final decision.</p>`;
+$("approveBtn").onclick=()=>decide("Approved");$("rejectBtn").onclick=()=>decide("Rejected")}
+function decide(s){if(!current)return;current.status=s;current.updated=new Date().toISOString();const i=history.findIndex(x=>x.id===current.id);if(i>=0)history[i]=current;persist();render();stats();$("decisionMsg").textContent="Decision saved: "+s;renderWorkflow()}
+$("analyzeBtn").onclick=()=>{let t=$("contentText").value.trim();if(!t){alert("Please paste content first.");$("contentText").focus();return}saveForm();current={id:Date.now(),title:$("contentTitle").value.trim()||"Untitled draft",text:t,created:new Date().toISOString(),status:"Pending",issues:analyse(t),versions:[],comments:[]};history.unshift(current);persist();render();stats();$("results").scrollIntoView({behavior:"smooth",block:"start"})};
+$("sampleBtn").onclick=()=>{$("contentTitle").value="Northstar product announcement";$("contentText").value="We are the #1 in the world. Our product delivers 100% guaranteed results and helps customers get the best outcome. Founded in 2020, Northstar is headquartered in New Delhi."};
+$("saveGuidelines").onclick=()=>{saveForm();persist();$("saveMessage").textContent="Guidelines saved on this device."};
+$("resetGuidelines").onclick=()=>{guidelines={...defaults};fill();persist();$("saveMessage").textContent="Demo guidelines restored."};
+function renderHistory(){let r=$("historyList");if(!history.length){r.className="empty";r.textContent="No reviews saved yet.";return}r.className="";r.innerHTML=history.map(x=>`<div class="history-item"><div><b>${esc(x.title)}</b><br><small>${new Date(x.created).toLocaleString()} • ${x.issues?.length||0} finding(s)</small></div><span class="status ${String(x.status).toLowerCase()}">${esc(x.status)}</span></div>`).join("")}
+function renderWorkflow(){let s=$("workflowItem"),old=s.value;s.innerHTML=history.length?history.map(x=>`<option value="${x.id}">${esc(x.title)} — ${esc(x.status)}</option>`).join(""):'<option value="">No review items yet</option>';if(history.some(x=>String(x.id)===old))s.value=old;let item=history.find(x=>String(x.id)===s.value);$("workflowLog").innerHTML=item?`<b>${esc(item.title)}</b><p class="sub">Status: ${esc(item.status)} · ${item.versions?.length||0} version snapshot(s) · ${item.comments?.length||0} comment(s)</p>`+[...(item.comments||[]).map(c=>`<div class="issue"><b>${esc(c.role)}</b> · <small>${new Date(c.at).toLocaleString()}</small><p>${esc(c.text)}</p></div>`),...(item.versions||[]).map(v=>`<div class="issue"><b>Version snapshot</b><p>${esc(v.at)} · ${esc(v.text.slice(0,180))}</p></div>`)].join(""):'<div class="empty">Create a content review first to start a workflow.</div>'}
+$("workflowItem").onchange=renderWorkflow;
+function selected(){return history.find(x=>String(x.id)===$("workflowItem").value)}
+$("addComment").onclick=()=>{let x=selected(),t=$("reviewComment").value.trim();if(!x||!t){alert("Select a review and enter a comment.");return}x.comments=x.comments||[];x.comments.push({role:$("demoRole").value,text:t,at:new Date().toISOString()});$("reviewComment").value="";persist();renderWorkflow()};
+$("saveVersion").onclick=()=>{let x=selected();if(!x){alert("Create a review first.");return}x.versions=x.versions||[];x.versions.push({text:x.text,at:new Date().toLocaleString()});persist();renderWorkflow()};
+$("workflowApprove").onclick=()=>{let x=selected();if(!x){alert("Create a review first.");return}if($("demoRole").value==="Editor"){alert("Demo rule: choose Reviewer or Admin to approve.");return}if(!confirm("Approve this review item?"))return;x.status="Approved";if(current?.id===x.id){current=x;render()}persist();stats();renderWorkflow()};
+$("workflowReject").onclick=()=>{let x=selected();if(!x){alert("Create a review first.");return}if($("demoRole").value==="Editor"){alert("Demo rule: choose Reviewer or Admin to request changes.");return}x.status="Rejected";if(current?.id===x.id){current=x;render()}persist();stats();renderWorkflow()};
+$("checkClaims").onclick=()=>{let t=$("claimText").value.trim(),facts=lines(guidelines.approvedFacts);if(!t){alert("Enter claims to check.");return}let sentences=t.split(/(?<=[.!?])\s+/).filter(Boolean),out=[];sentences.forEach(s=>{let matches=facts.filter(f=>s.toLowerCase().includes(f.toLowerCase())||f.toLowerCase().includes(s.toLowerCase()));let risky=/\b(guarantee|guaranteed|best|fastest|leading|#1|number one|always|never|100%)\b/i.test(s);out.push({s,matches,risky})});$("claimResults").className="";$("claimResults").innerHTML=out.map(x=>`<div class="issue ${x.risky&&!x.matches.length?"high":""}"><b>${x.risky&&!x.matches.length?"Needs evidence":x.matches.length?"Possible approved-fact text match":"No approved-fact text match"}</b><p>${esc(x.s)}</p><p>${x.matches.length?"Matched local fact: "+esc(x.matches.join("; ")):"No exact approved fact text match. Ask a human reviewer to verify."}</p></div>`).join("")};
+$("copyFacts").onclick=()=>{$("claimText").value=$("contentText").value};
+function lum(hex){let v=hex.replace("#","");let c=[0,2,4].map(i=>parseInt(v.slice(i,i+2),16)/255).map(x=>x<=.04045?x/12.92:Math.pow((x+.055)/1.055,2.4));return .2126*c[0]+.7152*c[1]+.0722*c[2]}
+function contrast(){let a=lum($("fgColor").value),b=lum($("bgColor").value),r=(Math.max(a,b)+.05)/(Math.min(a,b)+.05);$("contrastRatio").textContent=r.toFixed(2)+":1";$("contrastSample").style.background=$("bgColor").value;$("contrastSample").style.color=$("fgColor").value;$("contrastSample").textContent="Aa";$("contrastStatus").textContent=r>=4.5?"Passes normal-text AA (4.5:1)":r>=3?"Passes large-text AA only (3:1)":"Below WCAG AA contrast thresholds"}
+$("fgColor").oninput=contrast;$("bgColor").oninput=contrast;
+let assetUrl=null;$("assetFile").onchange=()=>{let f=$("assetFile").files[0];if(!f)return;if(!f.type.startsWith("image/")){alert("Please choose an image file.");return}if(f.size>5*1024*1024){alert("Please choose an image under 5 MB.");$("assetFile").value="";return}if(assetUrl)URL.revokeObjectURL(assetUrl);assetUrl=URL.createObjectURL(f);$("assetPreview").src=assetUrl;$("assetPreview").hidden=false};
+$("checkVisual").onclick=()=>{let f=$("assetFile").files[0],alt=$("altText").value.trim(),ratio=parseFloat($("contrastRatio").textContent);let items=[];items.push(f?"Image uploaded: "+f.name:"No image uploaded.");items.push(alt?"Alt text provided. Check that it accurately describes the image.":"Missing alt text: add a concise description if the image conveys information.");items.push("Text contrast: "+ratio.toFixed(2)+":1 — "+(ratio>=4.5?"passes normal-text AA":ratio>=3?"large-text AA only":"below AA thresholds")+".");$("visualResults").className="";$("visualResults").innerHTML=items.map(x=>`<div class="issue"><p>${esc(x)}</p></div>`).join("")};
+$("exportBtn").onclick=()=>{let blob=new Blob([JSON.stringify({guidelines,history,activity,exportedAt:new Date().toISOString()},null,2)],{type:"application/json"}),u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download="brandlens-round3-review-data.json";a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)};
+$("clearHistory").onclick=()=>{if(confirm("Delete all review history in this browser?")){history=[];current=null;persist();renderHistory();renderWorkflow();stats();$("results").className="empty";$("results").textContent="No content analysed yet."}};
+fill();stats();renderHistory();renderWorkflow();contrast();
+</script></body></html>
